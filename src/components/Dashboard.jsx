@@ -13,6 +13,7 @@ import {
   TimeScale
 } from 'chart.js'
 import 'chartjs-adapter-date-fns'
+import { format, getISOWeek, getYear } from 'date-fns'
 import { useAppData } from '../context/AppDataContext'
 
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title, TimeScale)
@@ -33,12 +34,19 @@ function buildCategoryData(expenses) {
   }
 }
 
-function buildTrendData(expenses) {
-  // group by date (day)
+function buildTrendData(expenses, range = 'day') {
+  // group by day / week / month
   const map = {}
   for (const e of expenses) {
     const d = new Date(e.createdAt)
-    const key = d.toISOString().slice(0, 10)
+    let key
+    if (range === 'week') {
+      key = `${getYear(d)}-W${String(getISOWeek(d)).padStart(2, '0')}`
+    } else if (range === 'month') {
+      key = format(d, 'yyyy-MM')
+    } else {
+      key = format(d, 'yyyy-MM-dd')
+    }
     map[key] = (map[key] || 0) + Number(e.amount)
   }
   const labels = Object.keys(map).sort()
@@ -46,7 +54,7 @@ function buildTrendData(expenses) {
     labels,
     datasets: [
       {
-        label: 'Daily spending',
+        label: range === 'day' ? 'Daily spending' : range === 'week' ? 'Weekly spending' : 'Monthly spending',
         data: labels.map(l => map[l]),
         borderColor: '#3B82F6',
         backgroundColor: 'rgba(59,130,246,0.12)',
@@ -57,9 +65,10 @@ function buildTrendData(expenses) {
 }
 
 export default function Dashboard() {
-  const { data } = useAppData()
+  const { data, setSelectedRange } = useAppData()
   const catData = buildCategoryData(data.expenses)
-  const trendData = buildTrendData(data.expenses)
+  const range = (data.ui && data.ui.selectedRange) || 'day'
+  const trendData = buildTrendData(data.expenses, range)
 
   return (
     <section className="dashboard">
@@ -72,7 +81,17 @@ export default function Dashboard() {
       </div>
 
       <div className="card">
-        <h3>Spending trend</h3>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <h3>Spending trend</h3>
+          <div>
+            <label className="muted">Range: </label>
+            <select value={range} onChange={e => setSelectedRange(e.target.value)}>
+              <option value="day">Day</option>
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+            </select>
+          </div>
+        </div>
         <div style={{ maxWidth: 720 }}>
           <Line data={trendData} />
         </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
 
 function Progress({ value = 0, max = 100 }) {
@@ -12,7 +12,21 @@ function Progress({ value = 0, max = 100 }) {
 }
 
 export default function Budgets() {
-  const { data } = useAppData()
+  const { data, updateBudgets } = useAppData()
+  const [editingId, setEditingId] = useState(null)
+  const [form, setForm] = useState({})
+
+  function startEdit(b) {
+    setEditingId(b.id)
+    setForm({ ...b })
+  }
+
+  function save() {
+    const next = data.budgets.map(b => (b.id === editingId ? { ...b, ...form } : b))
+    updateBudgets(next)
+    setEditingId(null)
+    setForm({})
+  }
 
   return (
     <section className="dashboard">
@@ -23,10 +37,31 @@ export default function Budgets() {
           {data.budgets.map(b => (
             <div className="budget-card" key={b.id}>
               <div className="meta">
-                <strong>{b.name}</strong>
-                <span className="muted">${b.spent} / ${b.limit}</span>
+                {editingId === b.id ? (
+                  <input value={form.name || ''} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+                ) : (
+                  <strong>{b.name}</strong>
+                )}
+
+                <span className="muted">${b.spent} / ${editingId === b.id ? (
+                  <input type="number" value={form.limit || 0} onChange={e => setForm(f => ({ ...f, limit: Number(e.target.value) }))} />
+                ) : (
+                  b.limit
+                )}</span>
               </div>
+
               <Progress value={b.spent} max={b.limit} />
+
+              <div style={{marginTop:8}}>
+                {editingId === b.id ? (
+                  <>
+                    <button className="btn" onClick={() => save()}>Save</button>
+                    <button className="btn ghost" onClick={() => { setEditingId(null); setForm({}) }}>Cancel</button>
+                  </>
+                ) : (
+                  <button className="btn ghost" onClick={() => startEdit(b)}>Edit</button>
+                )}
+              </div>
             </div>
           ))}
         </div>
