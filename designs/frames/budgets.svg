@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" rx="16" fill="#0F172A" />
+  <text x="48" y="64" fill="#E6EEF8" font-family="Inter, sans-serif" font-size="28">Budgets — Personal Finance Tracker</text>
+  <rect x="48" y="96" width="1064" height="520" rx="12" fill="#0B1220" />
+</svg>

@@ -1,0 +1,30 @@
+{
+  "tokenSetOrder": ["global"],
+  "tokens": {
+    "global": {
+      "color": {
+        "primary": { "value": "#6366F1", "type": "color" },
+        "accent": { "value": "#3B82F6", "type": "color" },
+        "success": { "value": "#10B981", "type": "color" },
+        "danger": { "value": "#EF4444", "type": "color" },
+        "background": { "value": "#0F172A", "type": "color" },
+        "surface": { "value": "#0B1220", "type": "color" },
+        "muted": { "value": "#9CA3AF", "type": "color" }
+      },
+      "typography": {
+        "headline": { "value": { "fontFamily": "Inter", "fontWeight": "700", "fontSize": 28 }, "type": "typography" },
+        "subhead": { "value": { "fontFamily": "Inter", "fontWeight": "600", "fontSize": 16 }, "type": "typography" },
+        "body": { "value": { "fontFamily": "Inter", "fontWeight": "400", "fontSize": 14 }, "type": "typography" },
+        "caption": { "value": { "fontFamily": "Inter", "fontWeight": "400", "fontSize": 12 }, "type": "typography" }
+      },
+      "spacing": {
+        "base": { "value": 8, "type": "size" },
+        "gutter": { "value": 24, "type": "size" },
+        "containerMaxWidth": { "value": 1100, "type": "size" }
+      },
+      "radii": {
+        "default": { "value": 12, "type": "borderRadius" }
+      }
+    }
+  }
+}

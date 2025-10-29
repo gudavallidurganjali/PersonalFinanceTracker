@@ -1,0 +1,22 @@
+{
+  "colors": {
+    "primary": "#6366F1",
+    "accent": "#3B82F6",
+    "success": "#10B981",
+    "danger": "#EF4444",
+    "background": "#0F172A",
+    "surface": "#0B1220",
+    "muted": "#9CA3AF"
+  },
+  "typography": {
+    "headline": "Inter-Bold 24px",
+    "subhead": "Inter-SemiBold 16px",
+    "body": "Inter-Regular 14px",
+    "caption": "Inter-Regular 12px"
+  },
+  "spacing": {
+    "base": 8,
+    "gutter": 24,
+    "radius": 12
+  }
+}
